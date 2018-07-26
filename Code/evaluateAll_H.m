@@ -6,8 +6,8 @@ fid = fopen('evaluate_result', 'w');
 fprintf(fid, 'D,Problem_type,number_vector,solution_number,set_number,avg_consis_R2C_1,avg_consis_newR2C_1,avg_consis_R2C_2,avg_consis_newR2C_2,avg_correct_R2C_1,avg_correct_newR2C_1,avg_correct_R2C_2,avg_correct_newR2C_2\n');
 
 solution_number = 100;
-set_number = 1000;
-dimension = 3;
+set_number = 100;
+dimension = 4;
 
 for problem_type = ["linear", "concave", "convex"]
     for h = 1:50
