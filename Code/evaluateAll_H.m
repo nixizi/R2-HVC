@@ -7,7 +7,7 @@ fprintf(fid, 'D,Problem_type,number_vector,solution_number,set_number,avg_consis
 
 solution_number = 100;
 set_number = 100;
-dimension = 4;
+dimension = 5;
 
 for problem_type = ["linear", "concave", "convex"]
     for h = 1:50

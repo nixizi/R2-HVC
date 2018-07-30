@@ -1,7 +1,7 @@
 function generateAllDataSet_H()
 solution_number = 100;
 set_number = 100;
-dimension = 4;
+dimension = 5;
 for problem_type = ["linear", "concave", "convex"]
     % File name data_set_d_solutionNumber_problemType_setNum_numVector
     data_set_file_name = sprintf("data_set_%d_%d_%s_%d.mat", dimension, solution_number, problem_type, set_number);
