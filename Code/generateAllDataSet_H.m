@@ -10,7 +10,7 @@ for problem_type = ["linear", "concave", "convex"]
     HVC_file_name = sprintf("HVC_%d_%d_%s_%d.mat", dimension, solution_number, problem_type, set_number);
     if exist(HVC_file_name) == 2
         HVC = load(HVC_file_name);
-        HVC = HVC.x;
+        HVC = HVC.HVC;
     else
         HVC = calculateHVC(data_set);
         save(HVC_file_name, "HVC");
