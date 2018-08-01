@@ -1,8 +1,9 @@
-d = 5;
-solution_num = 100;
-set_num = 100;
-for problem_type = ["linear", "concave", "convex"]
-    generateData_f(d, solution_num, problem_type, set_num);
+for d = 6:16
+    solution_num = 100;
+    set_num = 100;
+    for problem_type = ["linear", "concave", "convex"]
+        generateData_f(d, solution_num, problem_type, set_num);
+    end
 end
 
 function data_set = generateData_f(dimension, solution_number, problem_type, set_number)
