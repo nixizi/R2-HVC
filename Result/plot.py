@@ -12,7 +12,7 @@ def plot_consistancy(plot_data, name):
         plt.plot(plot_data["number_vector"], plot_data[col], linestyle=m, linewidth=4)
         i += 1
     plt.tick_params(labelsize=30)
-    plt.xlim(0, 1350)
+    plt.xlim(0, 135752)
     plt.ylim(0, 1)
     plt.xlabel("Number of Vectors", fontsize=40)
     plt.ylabel("Consistency Rate", fontsize=40)
@@ -32,7 +32,7 @@ def plot_correct(plot_data, name):
         plt.plot(plot_data["number_vector"], plot_data[col], linestyle=m, linewidth=4)
         i += 1
     plt.tick_params(labelsize=30)
-    plt.xlim(0, 1350)
+    plt.xlim(0, 135752)
     plt.ylim(0, 1)
     plt.xlabel("Number of Vectors", fontsize=40)
     plt.ylabel("Correct Identification Rate", fontsize=40)
@@ -44,7 +44,7 @@ def plot_correct(plot_data, name):
 
 if __name__ == "__main__":
     data = pd.read_csv(
-        "/home/caesar/Repository/R2-HVC/Data/3D_100_1000_6:1300", sep=',')
+        "5D_100_100_10:135751", sep=',')
     names = data.columns.tolist()
     names.append("number_vector")
     names.pop(2)
@@ -66,9 +66,9 @@ if __name__ == "__main__":
     data_concave_correct = data_correct[data_set_size:2*data_set_size]
     data_convex_correct = data_correct[2*data_set_size:3*data_set_size]
 
-    # plot_consistancy(data_linear_consistency, "3D-Linear")
-    # plot_consistancy(data_concave_consistency, "3D-Concave")
-    # plot_consistancy(data_convex_consistency, "3D-Convex")
-    plot_correct(data_linear_correct, "3D-Linear")
-    plot_correct(data_concave_correct, "3D-Concave")
-    plot_correct(data_convex_correct, "3D-Convex")
+    plot_consistancy(data_linear_consistency, "5D-Linear-Consistency")
+    plot_consistancy(data_concave_consistency, "5D-Concave-Consistency")
+    plot_consistancy(data_convex_consistency, "5D-Convex-Consistency")
+    plot_correct(data_linear_correct, "5D-Linear-Correctness")
+    plot_correct(data_concave_correct, "5D-Concave-Correctness")
+    plot_correct(data_convex_correct, "5D-Convex-Correctness")
