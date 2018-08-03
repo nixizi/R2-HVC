@@ -2,7 +2,7 @@ function generateAllDataSet(dimension)
 solution_number = 100;
 set_number = 100;
 %dimension = 5;
-for problem_type = [string('linear')]
+for problem_type = [string('linear'),string('convex'),string('concave')]
     % File name data_set_d_solutionNumber_problemType_setNum_numVector
     data_set_file_name = sprintf('data_set_%d_%d_%s_%d.mat', dimension, solution_number, problem_type, set_number);
     data_set = load(data_set_file_name, 'data_set');
@@ -15,9 +15,9 @@ for problem_type = [string('linear')]
         HVC = calculateHVC(data_set);
         save(HVC_file_name, 'HVC');
     end
-    parfor i = 1:10
+    parfor i = 1:100
         num_vector = i*10;
-        for seed = 1:10
+        for seed = 1:30
             % File name result_set_d_solutionNumber_problemType_setNum_numVector
              result_set_file_name = sprintf('result_set_%d_%s_numVec_%d_seed_%d.mat', dimension, problem_type, num_vector, seed);
              result_set = calculateResult(data_set, num_vector, seed);
