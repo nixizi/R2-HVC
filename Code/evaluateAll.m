@@ -26,7 +26,7 @@ for problem_type = [string('linear'),string('convex'),string('concave')]
     end
 end
 
-file_name = sprintf('evaluate_result.mat');
+file_name = sprintf('evaluate_result_dim_%d.mat',dimension);
 save(file_name, 'evaluate_result');
 
 %fclose(fid);
