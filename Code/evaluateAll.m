@@ -5,8 +5,8 @@ function evaluateAll(dimension)
 % Print Header
 %fprintf(fid, 'D,Problem_type,number_vector,solution_number,set_number,avg_consis_R2C_1,avg_consis_newR2C_1,avg_correct_R2C_1,avg_correct_newR2C_1\n');
 solution_number = 100;
-set_number = 5;
-seed_number = 3
+set_number = 100;
+seed_number = 30;
 %dimension = 5;
 
 % for problem_type = [string('linear'),string('convex'),string('concave')]
