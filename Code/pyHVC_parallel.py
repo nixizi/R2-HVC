@@ -55,7 +55,7 @@ if __name__=="__main__":
     results = multiprocessing.Queue()
 
     # Start consumers
-    num_consumers = multiprocessing.cpu_count()
+    num_consumers = multiprocessing.cpu_count() - 2
     print('Creating %d consumers' % num_consumers)
     consumers = [Consumer(tasks, results) for i in range(num_consumers)]
     print("Initalize workers")
@@ -65,7 +65,7 @@ if __name__=="__main__":
     point_num = 100
     dimension = 15
     data_set_size = 100
-    data_type = "concave"
+    data_type = "convex"
     data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
 
     # Enqueue Jobs
