@@ -7,6 +7,7 @@ import pygmo
 
 def random_data(lower_bound, upper_bound, dimension):
     return [lower_bound + random.random() * (upper_bound - lower_bound) for i in range(dimension)]
+    # return [random.randint(lower_bound, upper_bound -1) for i in range(dimension)]
 
 
 def is_dominate(x, y):
@@ -34,6 +35,10 @@ def is_dominate(x, y):
             pass
     return flag
 
+def is_same(x, y):
+    return np.array_equal(x, y)
+    # return np.allclose(x, y)
+
 def remove_dominated(result):
     n = len(result)
     dominated = [0 for x in range(n)]
@@ -49,14 +54,31 @@ def remove_dominated(result):
             dominated_list.append(result[i, :])
     return np.array(dominated_list)
 
+def remove_same(result):
+    n = len(result)
+    dominated = [0 for x in range(n)]
+    dominated_list = []
+    for a in range(n):
+        for b in range(a + 1, n):
+            p1 = result[a, :]
+            p2 = result[b, :]
+            if is_same(p1, p2) is True:
+                dominated[b] = 1
+    for i in range(n):
+        if dominated[i] == 0:
+            dominated_list.append(result[i, :])
+    return np.array(dominated_list)
+
 def generate_data_set(lower_bound, upper_bound, dimension, size):
     data_set = [random_data(lower_bound, upper_bound, dimension) for i in range(10 * size)]
-    data_set = np.array(data_set)
+    data_set = remove_same(np.array(data_set))
     data_set = remove_dominated(data_set)
     while(len(data_set) < size):
         new_set = [random_data(lower_bound, upper_bound, dimension) for i in range(10 * (size - len(data_set)))]
+        new_set = remove_same(np.array(new_set))
         data_set = remove_dominated(np.concatenate((data_set, new_set), axis=0))
-    random.shuffle(data_set)
+        data_set = remove_dominated(data_set)
+    # random.shuffle(data_set)
     return np.transpose(data_set[:size])
 
 def generate(lower_bound, upper_bound, dimension, size, num_of_data_size):
@@ -89,6 +111,21 @@ def read_data(name, variable_name):
     return data
 
 if __name__=="__main__":
+    # data_set = generate_data_set(0, 1, 5, 100)
+    # data_set = np.transpose(data_set)
+    # data_set = data_set.tolist()
+    # print(data_set)
+    # print(data_set)
+    # print(np.shape(data_set))
+    # reference_point = [1 for i in range(5)]
+    # data_set.append(reference_point)
+    # data_set = np.array(data_set)
+    # data_set = remove_dominated(data_set)
+    # reference_point = np.transpose(reference_point)
+    # data_set = np.append(data_set, reference_point)
+    # data_set = np.concatenate((np.transpose(data_set), reference_point), axis=0)
+    # print(data_set)
+
     # data = read_data("/home/nixizi/Repository/R2-HVC/Code/data_set_5_100_random_100.mat", "data_set")
     # print(data)
     # print(np.shape(data))
@@ -99,4 +136,5 @@ if __name__=="__main__":
     data = np.transpose(data)
     a_dict = {"data_set": data}
     sio.savemat("data_set_{0}_{1}_random_{2}.mat".format(dimension, point_num, set_num), a_dict)
+    print(data)
     print(np.shape(data))
