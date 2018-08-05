@@ -9,8 +9,8 @@ set_number = 100;
 seed_number = 30;
 %dimension = 5;
 
-% for problem_type = [string('linear'),string('convex'),string('concave')]
-for problem_type = ["linear", "concave", "convex"]
+% for problem_type = ["linear", "concave", "convex", "random"]
+for problem_type = ["random"]
     evaluate_result = zeros(set_number, 6, seed_number);
     for i = 1:set_number
         num_vector = i*10;
