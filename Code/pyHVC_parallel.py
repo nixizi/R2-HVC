@@ -65,7 +65,7 @@ if __name__=="__main__":
     point_num = 100
     dimension = 15
     data_set_size = 100
-    data_type = "linear"
+    data_type = "random"
     data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
 
     # Enqueue Jobs
