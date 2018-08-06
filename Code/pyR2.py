@@ -4,26 +4,27 @@ import scipy.io as sio
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import itertools
-
+import pygmo
 
 def read_data(name, variable_name):
     mat_file = sio.loadmat(name)
     data = mat_file[variable_name]
     return data
 
-
-def R2(data_set, weight_vector_grid, exclusive_index):
+def R2HVC(data_set, weight_vector_grid, exclusive_index, reference_point, is_maximize):
     (num_weight_vector, dimenstion) = np.shape(weight_vector_grid)
     exclusive_point = data_set[exclusive_index, :]
     data_set_exclusive = np.delete(data_set, exclusive_index, axis=0)
-    temp1 = np.min(exclusive_point/weight_vector_grid, axis=1)
+    temp1 = np.min(abs(exclusive_point - reference_point)/weight_vector_grid, axis=1)
     y = 0
     for i in range(num_weight_vector):
-        temp = (exclusive_point - data_set_exclusive)/weight_vector_grid[i, :]
+        if is_maximize is True:
+            temp = (exclusive_point - data_set_exclusive)/weight_vector_grid[i, :]
+        else:
+            temp = (data_set_exclusive - exclusive_point)/weight_vector_grid[i, :]
         x = np.min(np.max(temp, axis=1))
         y = y + math.pow(min(x, temp1[i]), dimenstion)
     return y/num_weight_vector
-
 
 def generate_WV_grid(num_of_vectors, dimension):
     mu = np.zeros((dimension))
@@ -61,6 +62,18 @@ def get_weighted_vectors(M, H):
     V = abs(V/np.sqrt(np.sum(np.square(V), axis=1))[:, None])
     return V
 
+def calculateHVC(data_set, reference_point, is_maximize):
+    (point_num, dimension) = np.shape(data_set)
+    HVC = np.zeros((point_num))
+    if is_maximize is True:
+        data = data_set * -1
+    else:
+        data = data_set
+    hv = pygmo.hypervolume(data)
+    # HV = hv.compute(reference_point)
+    for p in range(point_num):
+        HVC[p] = hv.exclusive(p, reference_point)
+    return HVC
 
 def plot_3D(EP):
     # Print 3D graph of EP
@@ -85,16 +98,17 @@ def plot_3D(EP):
 
 if __name__ == "__main__":
     datasets = read_data("/home/nixizi/Repository/R2-HVC/Data/5/data_set_5_100_linear_100.mat", "data_set")
-    result = read_data("/home/nixizi/Repository/R2-HVC/Data/5/HVC_5_100_linear_100.mat", "HVC")
     (num_point, dimension, num_data_set) = np.shape(datasets)
-    data_set = datasets[:, :, 1]
-    exclusive_index = 10
+    data_set = datasets[:, :, 9]
+    reference_point = [1 for i in range(dimension)]
+    is_maximize = True
+    result = calculateHVC(data_set, reference_point, is_maximize)
     WV = generate_WV_grid(100, dimension)
     order_1 = []
     order_2 = []
     for i in range(num_point):
-        order_1.append((i, R2(data_set, WV, i)))
-        order_2.append((i, result[0, i, 1]))
+        order_1.append((i, R2HVC(data_set, WV, i, reference_point, is_maximize)))
+        order_2.append((i, result[i]))
     order_1 = sorted(order_1, key=lambda x: x[1])
     order_2 = sorted(order_2, key=lambda x: x[1])
     for i in range(num_point):
