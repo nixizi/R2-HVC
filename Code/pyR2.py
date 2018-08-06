@@ -84,9 +84,18 @@ def plot_3D(EP):
     plt.show()
 
 if __name__ == "__main__":
-    total_number = 100
-    V2 = get_weighted_vectors(3, 11)
-    V = generate_WV_grid(total_number - len(V2), 3)
-    print(np.shape(V2))
-    V = np.concatenate((V, V2))
-    plot_3D(V)
+    datasets = read_data("/home/nixizi/Repository/R2-HVC/Data/5/data_set_5_100_linear_100.mat", "data_set")
+    result = read_data("/home/nixizi/Repository/R2-HVC/Data/5/HVC_5_100_linear_100.mat", "HVC")
+    (num_point, dimension, num_data_set) = np.shape(datasets)
+    data_set = datasets[:, :, 1]
+    exclusive_index = 10
+    WV = generate_WV_grid(100, dimension)
+    order_1 = []
+    order_2 = []
+    for i in range(num_point):
+        order_1.append((i, R2(data_set, WV, i)))
+        order_2.append((i, result[0, i, 1]))
+    order_1 = sorted(order_1, key=lambda x: x[1])
+    order_2 = sorted(order_2, key=lambda x: x[1])
+    for i in range(num_point):
+        print(order_1[i][0], order_2[i][0])
