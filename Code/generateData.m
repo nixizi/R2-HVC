@@ -1,7 +1,7 @@
 for d = 5:5
     solution_num = 100;
     set_num = 100;
-    for problem_type = ["linear", "concave", "convex"]
+    for problem_type = ["linear_triangular","linear_invertedtriangular", "concave_triangular","concave_invertedtriangular", "convex_triangular","convex_invertedtriangular"]
         generateData_f(d, solution_num, problem_type, set_num);
     end
 end
@@ -36,15 +36,24 @@ data = abs(mvnrnd(mu,sigma,solutionNum));
 %data = rand(solutionNum,dim);
 
 switch(problem_type)
-    case "linear"
+    case "linear_triangular"
         data = data./sum(data,2);
-    case "concave"
+    case "linear_invertedtriangular"
+        data = data./sum(data,2);
+        data = data*(-1);
+        data = data+1;
+    case "concave_triangular"
         data = data./sqrt(sum(data.^2,2));
-    case "convex"
-        %data = data./sqrt(sum(data.^2,2));
-        %data = data*(-1);
-        %data = data + 1;
+    case "concave_invertedtriangular"
+        data = data./sqrt(sum(data.^2,2));   
+        data = data*(-1);
+        data = data+1;
+    case "convex_triangular"
         data = data./sum(sqrt(data),2).^2;
+    case "convex_invertedtriangular"
+        data = data./sum(sqrt(data),2).^2; 
+        data = data*(-1);
+        data = data+1;
     otherwise
         fprintf("Invalid problem_type");
         data = [];
