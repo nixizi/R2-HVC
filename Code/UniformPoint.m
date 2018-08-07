@@ -21,6 +21,7 @@ function [W,N] = UniformPoint(N,M)
     while nchoosek(H1+M,M-1) <= N
         H1 = H1 + 1;
     end
+    H1 = H1 - 1;
     W = nchoosek(1:H1+M-1,M-1) - repmat(0:M-2,nchoosek(H1+M-1,M-1),1) - 1;
     W = ([W,zeros(size(W,1),1)+H1]-[zeros(size(W,1),1),W])/H1;
     if H1 < M
@@ -35,5 +36,6 @@ function [W,N] = UniformPoint(N,M)
         end
     end
     W = max(W,1e-6);
+    W = abs(W./sqrt(sum(W.^2,2)));
     N = size(W,1);
 end
