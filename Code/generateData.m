@@ -28,7 +28,12 @@ dim = dimension;
 solutionNum = solution_number;
 
 %raw data
-data = rand(solutionNum,dim);
+mu = zeros(1,dim);
+sigma = eye(dim,dim);
+%rng(seed);
+data = abs(mvnrnd(mu,sigma,solutionNum));
+%V = abs(R./sqrt(sum(R.^2,2)));
+%data = rand(solutionNum,dim);
 
 switch(problem_type)
     case "linear"
@@ -36,9 +41,10 @@ switch(problem_type)
     case "concave"
         data = data./sqrt(sum(data.^2,2));
     case "convex"
-        data = data./sqrt(sum(data.^2,2));
-        data = data*(-1);
-        data = data + 1;
+        %data = data./sqrt(sum(data.^2,2));
+        %data = data*(-1);
+        %data = data + 1;
+        data = data./sum(sqrt(data),2)^2;
     otherwise
         fprintf("Invalid problem_type");
         data = [];
