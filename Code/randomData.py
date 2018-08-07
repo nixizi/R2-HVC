@@ -111,24 +111,6 @@ def read_data(name, variable_name):
     return data
 
 if __name__=="__main__":
-    # data_set = generate_data_set(0, 1, 5, 100)
-    # data_set = np.transpose(data_set)
-    # data_set = data_set.tolist()
-    # print(data_set)
-    # print(data_set)
-    # print(np.shape(data_set))
-    # reference_point = [1 for i in range(5)]
-    # data_set.append(reference_point)
-    # data_set = np.array(data_set)
-    # data_set = remove_dominated(data_set)
-    # reference_point = np.transpose(reference_point)
-    # data_set = np.append(data_set, reference_point)
-    # data_set = np.concatenate((np.transpose(data_set), reference_point), axis=0)
-    # print(data_set)
-
-    # data = read_data("/home/nixizi/Repository/R2-HVC/Code/data_set_5_100_random_100.mat", "data_set")
-    # print(data)
-    # print(np.shape(data))
     dimension = 15
     point_num = 100
     set_num = 100

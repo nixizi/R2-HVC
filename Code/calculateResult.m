@@ -4,7 +4,10 @@ function result_set = calculateResult(data_set, num_vec, seed)
 %
 result_set = zeros(3, data_size, data_set_size);
 
-[W,N] = UniformVector(num_vec,dimension, seed);
+[W1,N] = UniformPoint(num_vec,dimension);
+[W2,N] = UniformVector(num_vec - N,dimension, seed);
+W = [W1;W2];
+
 
 rng(seed);
 points = rand(num_vec,dimension);
