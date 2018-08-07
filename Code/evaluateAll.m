@@ -9,7 +9,7 @@ set_number = 100;
 seed_number = 2;
 %dimension = 5;
 
-for problem_type = ["linear", "concave", "convex"]
+for problem_type = ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]
 %for problem_type = ["random"]
     evaluate_result = zeros(set_number, 6, seed_number);
     for i = 1:50

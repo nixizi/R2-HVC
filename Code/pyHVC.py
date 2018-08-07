@@ -29,6 +29,6 @@ if __name__=="__main__":
     #data_type = "random"
     #data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
     #calculateHVC(data, "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size))
-    for data_type in ["concave", "convex", "linear"]:
+    for data_type in ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]:
         data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
         calculateHVC(data, "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size))
