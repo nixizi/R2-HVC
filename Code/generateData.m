@@ -1,4 +1,4 @@
-for d = 6:16
+for d = 5:5
     solution_num = 100;
     set_num = 100;
     for problem_type = ["linear", "concave", "convex"]

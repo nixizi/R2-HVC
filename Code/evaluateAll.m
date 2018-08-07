@@ -6,13 +6,13 @@ function evaluateAll(dimension)
 %fprintf(fid, 'D,Problem_type,number_vector,solution_number,set_number,avg_consis_R2C_1,avg_consis_newR2C_1,avg_correct_R2C_1,avg_correct_newR2C_1\n');
 solution_number = 100;
 set_number = 100;
-seed_number = 30;
+seed_number = 2;
 %dimension = 5;
 
 for problem_type = ["linear", "concave", "convex"]
 %for problem_type = ["random"]
     evaluate_result = zeros(set_number, 6, seed_number);
-    for i = 1:set_number
+    for i = 1:50
         num_vector = i*10;
         for seed = 1:seed_number
             arr = evaluate(dimension, solution_number, problem_type, set_number, num_vector, seed);
