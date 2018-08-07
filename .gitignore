@@ -1,8 +1,10 @@
 Data/4/result_set_*
 .vscode
-Code/result_set_5*
+Code/result_set_*
 Data/5/R2Data/*
 Data/10/R2Data/*
 Code/output
 Data/15/R2Data/*
+Code/data_set*
+Code/HVC_*
 Code/__pycache__
