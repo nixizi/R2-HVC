@@ -16,9 +16,9 @@ for problem_type = [string('linear'),string('convex'),string('concave')]
         HVC = calculateHVC(data_set);
         save(HVC_file_name, 'HVC');
     end
-    parfor i = 1:100
+    parfor i = 1:50
         num_vector = i*10;
-        for seed = 1:30
+        for seed = 1:2
             % File name result_set_d_solutionNumber_problemType_setNum_numVector
              result_set_file_name = sprintf('result_set_%d_%s_numVec_%d_seed_%d.mat', dimension, problem_type, num_vector, seed);
              result_set = calculateResult(data_set, num_vector, seed);
