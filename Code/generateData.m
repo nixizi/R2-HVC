@@ -44,7 +44,7 @@ switch(problem_type)
         %data = data./sqrt(sum(data.^2,2));
         %data = data*(-1);
         %data = data + 1;
-        data = data./sum(sqrt(data),2)^2;
+        data = data./sum(sqrt(data),2).^2;
     otherwise
         fprintf("Invalid problem_type");
         data = [];

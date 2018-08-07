@@ -3,7 +3,7 @@ function result_set = calculateResult(data_set, num_vec, seed)
 [data_size, dimension, data_set_size] = size(data_set);
 %
 result_set = zeros(3, data_size, data_set_size);
-[W,N] = UniformVector(num_vec, seed);
+[W,N] = UniformVector(num_vec, dimension, seed);
 
 rng(seed);
 points = rand(num_vec,dimension);
