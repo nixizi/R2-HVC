@@ -28,6 +28,28 @@ def R2HVC(data_set, weight_vector_grid, exclusive_index, reference_point, is_max
         y = y + math.pow(min(x, temp1[i]), dimenstion)
     return y/num_weight_vector
 
+def R2_least_contributor(data_set, weight_vector_grid, reference_point, is_maximize):
+    (number_points, dimension) = np.shape(data_set)
+    HVC = []
+    for i in range(number_points):
+        HVC.append((i, R2HVC(data_set, weight_vector_grid, i, reference_point, is_maximize)))
+    HVC = sorted(HVC, key=lambda x: x[1])
+    return HVC[0][0]
+
+def Double_R2_least_contributor(data_set, weight_vector_grid_small, weight_vector_grid_large, reference_point, is_maximize):
+    (number_points, dimension) = np.shape(data_set)
+    HVC = []
+    for i in range(number_points):
+        HVC.append((i, R2HVC(data_set, weight_vector_grid_small, i, reference_point, is_maximize)))
+    HVC = sorted(HVC, key=lambda x: x[1])
+    
+    HVC_ac = []
+    for i in [HVC[j][0] for j in range(int(number_points * 0.5))]:
+        HVC_ac.append((i, R2HVC(data_set, weight_vector_grid_large, i, reference_point, is_maximize)))
+    HVC_ac = sorted(HVC_ac, key=lambda x: x[1])
+
+    return HVC_ac[0][0]
+
 def generate_WV_grid(num_of_vectors, dimension):
     mu = np.zeros((dimension))
     sigma = np.eye(dimension)
@@ -102,9 +124,11 @@ if __name__ == "__main__":
     datasets = read_data("/home/nixizi/Repository/R2-HVC/Data/5/data_set_5_100_linear_100.mat", "data_set")
     (num_point, dimension, num_data_set) = np.shape(datasets)
     count_R2 = 0
+    count_Double = 0
     count_MC = 0
-    count_MC2 = 0
     MC_faster = 0
+    R2_time = 0
+    Double_time = 0
     num_data_set = 100
     for j in range(num_data_set):
         data_set = datasets[:, :, j]
@@ -112,35 +136,56 @@ if __name__ == "__main__":
         is_maximize = True
         result = calculateHVC(data_set, reference_point, is_maximize)
         result2 = pyMC.MC2(data_set, reference_point, 1, 10000)
-        while result2[0] == 0:
-            result2 = pyMC.MC2(data_set, reference_point, 1, 10000)
-        WV = generate_WV_grid(100, dimension)
-        order_1 = []
-        order_2 = []
-        order_3 = []
-        order_4 = []
-        for i in range(num_point):
-            a = time.time()
-            order_1.append((i, R2HVC(data_set, WV, i, reference_point, is_maximize)))
-            b = time.time()
-            order_2.append((i, pyMC.MC_HVC(data_set, i, 100, reference_point, is_maximize)))
-            c = time.time()
-            # if (b - a) >= (c - b):
-            #     MC_faster+=1
-            order_3.append((i, result2[i]))
-            order_4.append((i, result[i]))
-            # print(order_2[i][1], order_3[i][1])
-        order_1 = sorted(order_1, key=lambda x: x[1])
-        order_2 = sorted(order_2, key=lambda x: x[1])
-        order_3 = sorted(order_3, key=lambda x: x[1])
-        order_4 = sorted(order_4, key=lambda x: x[1])
-        if order_4[i][0] == order_1[i][0]:
+
+        WV_large = generate_WV_grid(100, dimension)
+        WV_small = generate_WV_grid(1, dimension)
+        a = time.time()
+        R2_index = R2_least_contributor(data_set, WV_large, reference_point, is_maximize)
+        b = time.time()
+        Double_index = Double_R2_least_contributor(data_set, WV_small, WV_large, reference_point, is_maximize)
+        c = time.time()
+        Double_time += (c - b)
+        R2_time += (b - a)
+        hv = pygmo.hypervolume(data_set * -1)
+        HV_index = hv.least_contributor(reference_point)
+
+        if R2_index == HV_index:
             count_R2+=1
-        if order_4[i][0] == order_2[i][0]:
-            count_MC+=1
-        if order_4[i][0] == order_3[i][0]:
-            count_MC2+=1
-        # for i in range(num_point):
-        #     print(order_1[i][0], order_2[i][0], order_3[i][0], order_4[i][0])
-    print("R2:", count_R2/num_data_set, "MC:", count_MC/num_data_set, "MC2:", count_MC2/num_data_set)
-    # print("MC Faster rate:", MC_faster/(num_data_set*num_point))
+        if Double_index == HV_index:
+            count_Double+=1
+
+    print("R2:", count_R2/num_data_set, "Double:", count_Double/num_data_set)
+    print("R2 Time:", R2_time, "Double Time:", Double_time)
+
+    #     while result2[0] == 0:
+    #         result2 = pyMC.MC2(data_set, reference_point, 1, 10000)
+    #     WV = generate_WV_grid(100, dimension)
+    #     order_1 = []
+    #     order_2 = []
+    #     order_3 = []
+    #     order_4 = []
+    #     for i in range(num_point):
+    #         a = time.time()
+    #         order_1.append((i, R2HVC(data_set, WV, i, reference_point, is_maximize)))
+    #         b = time.time()
+    #         order_2.append((i, pyMC.MC_HVC(data_set, i, 100, reference_point, is_maximize)))
+    #         c = time.time()
+    #         # if (b - a) >= (c - b):
+    #         #     MC_faster+=1
+    #         order_3.append((i, result2[i]))
+    #         order_4.append((i, result[i]))
+    #         # print(order_2[i][1], order_3[i][1])
+    #     order_1 = sorted(order_1, key=lambda x: x[1])
+    #     order_2 = sorted(order_2, key=lambda x: x[1])
+    #     order_3 = sorted(order_3, key=lambda x: x[1])
+    #     order_4 = sorted(order_4, key=lambda x: x[1])
+    #     if order_4[i][0] == order_1[i][0]:
+    #         count_R2+=1
+    #     if order_4[i][0] == order_2[i][0]:
+    #         count_MC+=1
+    #     if order_4[i][0] == order_3[i][0]:
+    #         count_MC2+=1
+    #     # for i in range(num_point):
+    #     #     print(order_1[i][0], order_2[i][0], order_3[i][0], order_4[i][0])
+    # print("R2:", count_R2/num_data_set, "MC:", count_MC/num_data_set, "MC2:", count_MC2/num_data_set)
+    # # print("MC Faster rate:", MC_faster/(num_data_set*num_point))
