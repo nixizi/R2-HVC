@@ -1,4 +1,4 @@
-for d = 5:5
+for d = 10:10
     solution_num = 100;
     set_num = 100;
     for problem_type = ["linear_triangular","linear_invertedtriangular", "concave_triangular","concave_invertedtriangular", "convex_triangular","convex_invertedtriangular"]
