@@ -26,7 +26,7 @@ if __name__=="__main__":
     data_type = "random"
     name_1 = "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size)
     name_2 = "HVC_{0}_{1}_{2}_{3}.mat.test.mat".format(dimension, point_num, data_type, data_set_size)
-    data_1 = read_data("/home/nixizi/Repository/R2-HVC/Code/HVC_5_100_random_100.mat", "HVC")
+    data_1 = read_data("/home/nixizi/Repository/R2-HVC/evaluate_result_dim_5_probtype_concave_triangular.mat", "evaluate_result")
     # data_2 = read_data(name_2, "HVC")
     print(data_1)
     # print(check(data_1, data_2))
