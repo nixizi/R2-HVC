@@ -23,9 +23,10 @@ for problem_type = [string('convex_invertedtriangular'), string('concave_triangu
         for seed = 1:30
             % File name result_set_d_solutionNumber_problemType_setNum_numVector
              result_set_file_name = sprintf('result_set_%d_%s_numVec_%d_seed_%d.mat', dimension, problem_type, num_vector, seed);
-             result_set = calculateResult(data_set, num_vector, seed);
-             result_set = [HVC; result_set];
-             parsave(result_set_file_name, result_set);
+             if exist(result_set_file_name) ~= 2
+                result_set = calculateResult(data_set, num_vector, seed);
+                result_set = [HVC; result_set];
+                parsave(result_set_file_name, result_set);
         end   
     end
 end
