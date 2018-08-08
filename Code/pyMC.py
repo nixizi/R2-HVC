@@ -39,3 +39,28 @@ def MC_HVC(data_set, exclusive_index, num_sample, reference_point, is_maximum):
         if max(np.sum(dominance_check, axis=1)) == dimension:
             miss+=1
     return ((num_sample - miss) / num_sample) * np.prod(abs(exclusive_point - u))
+
+def MC2(data_set, reference_point, k, num_sample):
+    # Only work when M > 2
+    (N, dimension) = np.shape(data_set)
+    F_min = np.min(data_set, axis=0)
+    S = np.random.rand(num_sample, dimension) * np.matlib.repmat(reference_point-F_min, num_sample, 1) + np.matlib.repmat(F_min, num_sample, 1)
+    PdS = np.zeros((N, num_sample), dtype=int)
+    dS = np.zeros(num_sample, dtype=int)
+    for i in range(N):
+        x = np.sum(np.matlib.repmat(data_set[i], num_sample, 1) - S <= 0, axis=1) == dimension
+        PdS[i][x == 1] = 1
+        dS[x == 1] = dS[x == 1] + 1
+    alpha = np.zeros(N)
+    alpha[0] = np.prod(k/N)
+    # for i in range(1, k + 1):
+    #     alpha[i - 1] = np.prod((k - np.array([j for j in range(1, i)]))/(N - np.array([j for j in range(1, i)]))) / i
+    F = np.zeros(N)
+    for i in range(N):
+        a = PdS[i]
+        b = dS[a] - 1
+        b[b < 0] = 0
+        F[i] = sum(alpha[b])
+    F = F * np.prod(reference_point - F_min)/num_sample
+    return F
+

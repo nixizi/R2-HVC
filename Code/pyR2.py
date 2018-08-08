@@ -103,36 +103,44 @@ if __name__ == "__main__":
     (num_point, dimension, num_data_set) = np.shape(datasets)
     count_R2 = 0
     count_MC = 0
+    count_MC2 = 0
     MC_faster = 0
     num_data_set = 100
     for j in range(num_data_set):
         data_set = datasets[:, :, j]
-        reference_point = [1 for i in range(dimension)]
-        is_maximize = False
+        reference_point = [0 for i in range(dimension)]
+        is_maximize = True
         result = calculateHVC(data_set, reference_point, is_maximize)
+        result2 = pyMC.MC2(data_set, reference_point, 1, 10000)
+        while result2[0] == 0:
+            result2 = pyMC.MC2(data_set, reference_point, 1, 10000)
         WV = generate_WV_grid(100, dimension)
         order_1 = []
         order_2 = []
         order_3 = []
+        order_4 = []
         for i in range(num_point):
             a = time.time()
             order_1.append((i, R2HVC(data_set, WV, i, reference_point, is_maximize)))
             b = time.time()
             order_2.append((i, pyMC.MC_HVC(data_set, i, 100, reference_point, is_maximize)))
             c = time.time()
-            if (b - a) >= (c - b):
-                MC_faster+=1
-            order_3.append((i, result[i]))
+            # if (b - a) >= (c - b):
+            #     MC_faster+=1
+            order_3.append((i, result2[i]))
+            order_4.append((i, result[i]))
             # print(order_2[i][1], order_3[i][1])
         order_1 = sorted(order_1, key=lambda x: x[1])
         order_2 = sorted(order_2, key=lambda x: x[1])
         order_3 = sorted(order_3, key=lambda x: x[1])
-        if order_3[i][0] == order_1[i][0]:
+        order_4 = sorted(order_4, key=lambda x: x[1])
+        if order_4[i][0] == order_1[i][0]:
             count_R2+=1
-        if order_3[i][0] == order_2[i][0]:
+        if order_4[i][0] == order_2[i][0]:
             count_MC+=1
+        if order_4[i][0] == order_3[i][0]:
+            count_MC2+=1
         # for i in range(num_point):
-        #     # print(order_1[i][0], order_2[i][0], order_3[i][0])
-        #     pass
-    print("R2:", count_R2/num_data_set, "MC:", count_MC/num_data_set)
-    print("MC Faster rate:", MC_faster/(num_data_set*num_point))
+        #     print(order_1[i][0], order_2[i][0], order_3[i][0], order_4[i][0])
+    print("R2:", count_R2/num_data_set, "MC:", count_MC/num_data_set, "MC2:", count_MC2/num_data_set)
+    # print("MC Faster rate:", MC_faster/(num_data_set*num_point))
