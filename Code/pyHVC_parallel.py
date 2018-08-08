@@ -50,42 +50,42 @@ def read_data(name, variable_name):
     return data
 
 if __name__=="__main__":
-    # Establish communication queues
-    tasks = multiprocessing.JoinableQueue()
-    results = multiprocessing.Queue()
+    for data_type in ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]:
+        # Establish communication queues
+        tasks = multiprocessing.JoinableQueue()
+        results = multiprocessing.Queue()
 
-    # Start consumers
-    num_consumers = multiprocessing.cpu_count() - 2
-    print('Creating %d consumers' % num_consumers)
-    consumers = [Consumer(tasks, results) for i in range(num_consumers)]
-    print("Initalize workers")
-    for w in consumers:
-        w.start()
-    
-    point_num = 100
-    dimension = 15
-    data_set_size = 100
-    data_type = "random"
-    data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
+        # Start consumers
+        num_consumers = multiprocessing.cpu_count() - 2
+        print('Creating %d consumers' % num_consumers)
+        consumers = [Consumer(tasks, results) for i in range(num_consumers)]
+        print("Initalize workers")
+        for w in consumers:
+            w.start()
+        
+        point_num = 100
+        dimension = 10
+        data_set_size = 100
+        data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
 
-    # Enqueue Jobs
-    (point_num, dimension, data_set_size) = np.shape(data)
-    HVC = np.zeros((1, point_num, data_set_size))
-    data = data * -1
-    for s in range(data_set_size):
-        tasks.put(Task(s, data[:, :, s]))
+        # Enqueue Jobs
+        (point_num, dimension, data_set_size) = np.shape(data)
+        HVC = np.zeros((1, point_num, data_set_size))
+        data = data * -1
+        for s in range(data_set_size):
+            tasks.put(Task(s, data[:, :, s]))
 
-    # Add a poison pill for each consumer
-    for i in range(num_consumers):
-        tasks.put(None)
-    
-    # Wait for all of the tasks to finish
-    tasks.join()
+        # Add a poison pill for each consumer
+        for i in range(num_consumers):
+            tasks.put(None)
+        
+        # Wait for all of the tasks to finish
+        tasks.join()
 
-    for s in range(data_set_size):
-        result = results.get()
-        HVC[0, :, result[0]] = result[1]
-    
-    save_name = "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size)
-    save_dict = {'HVC': HVC}
-    sio.savemat(save_name, save_dict)
+        for s in range(data_set_size):
+            result = results.get()
+            HVC[0, :, result[0]] = result[1]
+        
+        save_name = "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size)
+        save_dict = {'HVC': HVC}
+        sio.savemat(save_name, save_dict)
