@@ -2,8 +2,8 @@ function generateAllDataSet(dimension)
 solution_number = 100;
 set_number = 100;
 %dimension = 5;
-for problem_type = [string('linear_triangular'),string('linear_invertedtriangular'),string('concave_triangular')]
-%for problem_type = [string('concave_invertedtriangular'),string('convex_triangular'),string('convex_invertedtriangular')]
+%for problem_type = [string('linear_triangular'),string('linear_invertedtriangular'),string('concave_triangular')]
+for problem_type = [string('concave_invertedtriangular'),string('convex_triangular'),string('convex_invertedtriangular')]
 %for problem_type = [string('random')]
     % File name data_set_d_solutionNumber_problemType_setNum_numVector
     data_set_file_name = sprintf('data_set_%d_%d_%s_%d.mat', dimension, solution_number, problem_type, set_number);
