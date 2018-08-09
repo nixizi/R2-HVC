@@ -50,8 +50,9 @@ def read_data(name, variable_name):
     return data
 
 if __name__=="__main__":
-    for data_type in ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]:
-        # Establish communication queues
+    #for data_type in ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]:
+    for data_type in ["convex_triangular", "convex_invertedtriangular"]:
+   # Establish communication queues
         tasks = multiprocessing.JoinableQueue()
         results = multiprocessing.Queue()
 
