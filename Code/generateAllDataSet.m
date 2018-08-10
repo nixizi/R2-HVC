@@ -16,9 +16,9 @@ for problem_type = [string('convex_invertedtriangular')]
     if exist(HVC_file_name) == 2
         HVC = load(HVC_file_name);
         HVC = HVC.HVC;
-    else
-        HVC = calculateHVC(data_set);
-        save(HVC_file_name, 'HVC');
+    %else
+    %    HVC = calculateHVC(data_set);
+    %    save(HVC_file_name, 'HVC');
     end
     parfor i = 1:100
         num_vector = i*10;

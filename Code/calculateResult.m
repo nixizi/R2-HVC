@@ -25,7 +25,7 @@ end
         %Some constant values         
         R2HV = R2ind(data,W,dim);
         
-        for i=1:Num        
+        for i=1:Num
             data1 = data;
             s = data1(i,:);
             data1(i,:) = [];
