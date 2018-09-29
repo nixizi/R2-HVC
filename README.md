@@ -1,4 +1,4 @@
 # R2-HVC
-Code and experiment results for R2-based hypervolume contribution approximation in multi-objective optimization. 
+Code and data for R2-based hypervolume contribution approximation. 
 
-The paper have been submitted to PPSN 2018. 
+The paper has been submitted to TEVC. 
