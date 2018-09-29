@@ -1,6 +1,6 @@
-function avg_arr = evaluate(dimension, solution_number, problem_type, set_number, num_vector, seed)
+function avg_arr = evaluate(dimension, solution_number, problem_type, set_number, num_vector, seed, reference_point)
     % Load result
-    result_set_file_name = sprintf('result_set_%d_%s_numVec_%d_seed_%d.mat', dimension, problem_type, num_vector, seed);
+    result_set_file_name = sprintf('result_set_%d_%s_numVec_%d_seed_%d_numSol_%d_%d.mat', dimension, problem_type, num_vector, seed, solution_number, reference_point);
 
     if exist(result_set_file_name) == 0
         avg_arr = 0;

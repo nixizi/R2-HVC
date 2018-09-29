@@ -29,8 +29,6 @@ function HVC_Appro = MonteCarlo(data,s,solutionIndex,dim,numSample, points)
     % sampling space: u->s
     % monte carlo sampling
     
-    %rng(seed);
-    %points = rand(numSample,dim);
     points = points.*(s-u) + u;
     
     data1 = data;
@@ -45,4 +43,5 @@ function HVC_Appro = MonteCarlo(data,s,solutionIndex,dim,numSample, points)
     end
     
     HVC_Appro = (numSample-miss)/numSample*prod(s-u);
+%    HVC_Appro = prod(s-u);
 end

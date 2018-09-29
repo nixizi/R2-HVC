@@ -51,7 +51,8 @@ def read_data(name, variable_name):
 
 if __name__=="__main__":
     #for data_type in ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]:
-    for data_type in ["convex_triangular", "convex_invertedtriangular"]:
+    for data_type in ["concave_triangular1"]:
+      for reference_point in range(5):
    # Establish communication queues
         tasks = multiprocessing.JoinableQueue()
         results = multiprocessing.Queue()
@@ -67,7 +68,8 @@ if __name__=="__main__":
         point_num = 100
         dimension = 10
         data_set_size = 100
-        data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
+        #reference_point = 0
+        data = read_data("data_set_{0}_{1}_{2}_{3}_{4}.mat".format(dimension, point_num, data_type, data_set_size, reference_point), "data_set")
 
         # Enqueue Jobs
         (point_num, dimension, data_set_size) = np.shape(data)
@@ -87,6 +89,6 @@ if __name__=="__main__":
             result = results.get()
             HVC[0, :, result[0]] = result[1]
         
-        save_name = "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size)
+        save_name = "HVC_{0}_{1}_{2}_{3}_{4}.mat".format(dimension, point_num, data_type, data_set_size, reference_point)
         save_dict = {'HVC': HVC}
         sio.savemat(save_name, save_dict)

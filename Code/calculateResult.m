@@ -32,8 +32,6 @@ end
             
             %HVC by Monte Carlo simulation
             MCsim(1,i) = MonteCarlo(data,s,i,dim,num_vec,points);
-            %len = sqrt(sum(s.^2,2));
-            %lambda = s./len;
 
             %R2 contribution by old method
             R2C(1,i) = R2HV - R2ind(data1,W,dim);

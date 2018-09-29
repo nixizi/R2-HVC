@@ -1,7 +1,9 @@
 for d = 10:10
     solution_num = 100;
     set_num = 100;
-    for problem_type = ["linear_triangular","linear_invertedtriangular", "concave_triangular","concave_invertedtriangular", "convex_triangular","convex_invertedtriangular"]
+    for problem_type = [string('linear_triangular'),string('linear_invertedtriangular'), ...
+            string('concave_triangular'),string('concave_invertedtriangular'), ...
+            string('convex_triangular'),string('convex_invertedtriangular')]
         generateData_f(d, solution_num, problem_type, set_num);
     end
 end
@@ -14,8 +16,8 @@ data_set = zeros(solution_number, dimension, set_number);
 for i = 1:set_number
     data_set(:, :, i) = generate_data(dimension, solution_number, problem_type);
 end
-data_set_file_name = sprintf("data_set_%d_%d_%s_%d.mat", dimension, solution_number, problem_type, set_number);
-save(data_set_file_name, "data_set");
+data_set_file_name = sprintf('data_set_%d_%d_%s_%d.mat', dimension, solution_number, problem_type, set_number);
+save(data_set_file_name, 'data_set');
 
 function data = generate_data(dimension, solution_number, problem_type)
 % Generate data
@@ -36,26 +38,26 @@ data = abs(mvnrnd(mu,sigma,solutionNum));
 %data = rand(solutionNum,dim);
 
 switch(problem_type)
-    case "linear_triangular"
+    case string('linear_triangular')
         data = data./sum(data,2);
-    case "linear_invertedtriangular"
+    case string('linear_invertedtriangular')
         data = data./sum(data,2);
         data = data*(-1);
         data = data+1;
-    case "concave_triangular"
+    case string('concave_triangular')
         data = data./sqrt(sum(data.^2,2));
-    case "concave_invertedtriangular"
+    case string('concave_invertedtriangular')
         data = data./sqrt(sum(data.^2,2));   
         data = data*(-1);
         data = data+1;
-    case "convex_triangular"
+    case string('convex_triangular')
         data = data./sum(sqrt(data),2).^2;
-    case "convex_invertedtriangular"
+    case string('convex_invertedtriangular')
         data = data./sum(sqrt(data),2).^2; 
         data = data*(-1);
         data = data+1;
     otherwise
-        fprintf("Invalid problem_type");
+        fprintf('Invalid problem_type');
         data = [];
 end
 
