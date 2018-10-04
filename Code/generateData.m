@@ -46,13 +46,13 @@ switch(problem_type)
         data = data+1;
     case string('concave_triangular')
         data = data./sqrt(sum(data.^2,2));
-    case string('concave_invertedtriangular')
+    case string('convex_invertedtriangular')
         data = data./sqrt(sum(data.^2,2));   
         data = data*(-1);
         data = data+1;
     case string('convex_triangular')
         data = data./sum(sqrt(data),2).^2;
-    case string('convex_invertedtriangular')
+    case string('concave_invertedtriangular')
         data = data./sum(sqrt(data),2).^2; 
         data = data*(-1);
         data = data+1;

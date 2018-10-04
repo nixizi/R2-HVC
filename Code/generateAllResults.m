@@ -1,4 +1,4 @@
-function generateAllDataSet(dimension,solution_number)
+function generateAllResults(dimension,solution_number)
 set_number = 100;
 
 for problem_type = [string('convex_invertedtriangular')]

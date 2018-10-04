@@ -1,4 +1,4 @@
-function evaluateAll(dimension)
+function evaluateAllResults(dimension)
 
     solution_number = 100;
     set_number = 100;
