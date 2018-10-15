@@ -1,5 +1,5 @@
 # R2-HVC
-=========
+-------------------
 Code and data for R2-based Hypervolume Contribution Approximation. 
 
 The paper has been submitted to TEVC. 
