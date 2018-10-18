@@ -1,3 +1,7 @@
+"""
+Calculate HVC by Monte Carlo method
+"""
+
 import numpy as np
 import math
 import scipy.io as sio
@@ -7,6 +11,15 @@ import itertools
 import pygmo
 
 def MC_HVC(data_set, exclusive_index, num_sample, reference_point, is_maximum):
+    """
+    Calculate the HVC by Monte Carlo method
+        :param data_set: A single data set, in [point_index, point_dimension] format
+        :param exclusive_index: The exclusive data point, which is the index of the point that want to calcualte the HVC
+        :param num_sample: The number of sample in Monte Carlo
+        :param reference_point: The reference point
+        :param is_maximum: Whether is maximum problem
+        :return: The HVC of exclusive_index
+    """
     (num_data, dimension) = np.shape(data_set)
     u = np.zeros(dimension)
     if is_maximum is True:
@@ -41,6 +54,13 @@ def MC_HVC(data_set, exclusive_index, num_sample, reference_point, is_maximum):
     return ((num_sample - miss) / num_sample) * np.prod(abs(exclusive_point - u))
 
 def MC2(data_set, reference_point, k, num_sample):
+    """
+    Calculate HVC for all points in a data set
+        :param data_set: 
+        :param reference_point: 
+        :param k: 
+        :param num_sample: 
+    """
     # Only work when M > 2
     (N, dimension) = np.shape(data_set)
     F_min = np.min(data_set, axis=0)
@@ -53,8 +73,6 @@ def MC2(data_set, reference_point, k, num_sample):
         dS[x == 1] = dS[x == 1] + 1
     alpha = np.zeros(N)
     alpha[0] = np.prod(k/N)
-    # for i in range(1, k + 1):
-    #     alpha[i - 1] = np.prod((k - np.array([j for j in range(1, i)]))/(N - np.array([j for j in range(1, i)]))) / i
     F = np.zeros(N)
     for i in range(N):
         a = PdS[i]

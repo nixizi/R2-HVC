@@ -1,3 +1,11 @@
+"""
+Parallize the HVC calculation
+
+The idea is simple. Initialize the tasks in a queue.
+Then initialize some consumer to pick up one task and calculate it.
+The calculation result will be push into the result queue.
+"""
+
 import multiprocessing
 import numpy as np
 import pygmo

@@ -1,3 +1,7 @@
+"""
+A program to calculate HVC
+"""
+
 import numpy as np
 import scipy.io as sio
 import pygmo
@@ -8,6 +12,11 @@ def read_data(name, variable_name):
     return data
 
 def calculateHVC(data, target_name):
+    """
+    Calculate the HVC
+        :param data: Input data point, the data format is [point_index, point_dimension, data_set_index]
+        :param target_name: The filename which the final result will be stored
+    """
     (point_num, dimension, data_set_size) = np.shape(data)
     HVC = np.zeros((1, point_num, data_set_size))
     data = data * -1

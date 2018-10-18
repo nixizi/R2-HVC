@@ -1,3 +1,7 @@
+"""
+A program to calcualte HVC by proposed R2 method
+"""
+
 import numpy as np
 import math
 import scipy.io as sio
@@ -14,6 +18,22 @@ def read_data(name, variable_name):
     return data
 
 def R2HVC(data_set, weight_vector_grid, exclusive_index, reference_point, is_maximize):
+    """
+    Calculate HVC of a signle point by proposed R2 method
+
+    Parameters
+    ----------
+    data_set: Single data set
+    weight_vector_grid: The weight vector grid in R2 method
+    exclusive_index: The index of point that want to calculate HVC by R2 method
+    reference_point: The reference point of R2
+    is_maximize: Whether is maximize problem
+
+    Returns
+    -------
+    A single HVC value of exclusive_index point
+
+    """
     (num_weight_vector, dimenstion) = np.shape(weight_vector_grid)
     exclusive_point = data_set[exclusive_index, :]
     data_set_exclusive = np.delete(data_set, exclusive_index, axis=0)
@@ -29,6 +49,21 @@ def R2HVC(data_set, weight_vector_grid, exclusive_index, reference_point, is_max
     return y/num_weight_vector
 
 def R2_least_contributor(data_set, weight_vector_grid, reference_point, is_maximize):
+    """
+    The method to find out the least HVC by R2 method
+
+    Parameters
+    ----------
+    data_set: 
+    weight_vector_grid: 
+    reference_point: 
+    is_maximize: 
+
+    Returns
+    -------
+    The index of least HVC in the data set
+
+    """
     (number_points, dimension) = np.shape(data_set)
     HVC = []
     for i in range(number_points):
@@ -37,6 +72,25 @@ def R2_least_contributor(data_set, weight_vector_grid, reference_point, is_maxim
     return HVC[0][0]
 
 def Double_R2_least_contributor(data_set, weight_vector_grid_small, weight_vector_grid_large, reference_point, is_maximize):
+    """
+    Find out the least HVC by apply R2 method twice.
+    The first calculation using a small weight vector grid to choose half of candidates
+    The second calculation using a large weight vector gird to precisely calculate the HVC
+    and find the least contributor.
+
+    Parameters
+    ----------
+    data_set: 
+    weight_vector_grid_small: 
+    weight_vector_grid_large: 
+    reference_point: 
+    is_maximize: 
+
+    Returns
+    -------
+    The index of least HVC contributor by R2 method
+
+    """
     (number_points, dimension) = np.shape(data_set)
     HVC = []
     for i in range(number_points):
@@ -51,6 +105,19 @@ def Double_R2_least_contributor(data_set, weight_vector_grid_small, weight_vecto
     return HVC_ac[0][0]
 
 def generate_WV_grid(num_of_vectors, dimension):
+    """
+    A method to generate weight vector grid
+
+    Parameters
+    ----------
+    num_of_vectors: 
+    dimension: 
+
+    Returns
+    -------
+    numpy matrix [vector_index, vector_dimension]
+
+    """
     mu = np.zeros((dimension))
     sigma = np.eye(dimension)
     R = np.random.multivariate_normal(mu, sigma, num_of_vectors)
@@ -58,7 +125,8 @@ def generate_WV_grid(num_of_vectors, dimension):
     return V
 
 def get_weighted_vectors(M, H):
-    """Set docstring here.
+    """
+    A method to generate weight vector grid
 
     Parameters
     ----------
@@ -87,6 +155,20 @@ def get_weighted_vectors(M, H):
     return V
 
 def calculateHVC(data_set, reference_point, is_maximize):
+    """
+    Precisely HVC calculator, using WFG method
+
+    Parameters
+    ----------
+    data_set: 
+    reference_point: 
+    is_maximize: 
+
+    Returns
+    -------
+    A list of HVC, calculate HVC for every point
+
+    """
     (point_num, dimension) = np.shape(data_set)
     HVC = np.zeros((point_num))
     if is_maximize is True:

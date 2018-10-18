@@ -1,3 +1,10 @@
+"""
+This program is used to checking the HVC result
+
+Since we used two different packages to calcualte the HVC
+we must make sure that two calculation result is the same
+
+"""
 import numpy as np
 import scipy.io as sio
 import pygmo

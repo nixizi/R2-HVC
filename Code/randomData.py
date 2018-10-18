@@ -1,3 +1,7 @@
+"""
+Random data generator
+"""
+
 import scipy.io as sio
 import numpy as np
 import random

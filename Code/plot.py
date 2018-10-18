@@ -1,3 +1,7 @@
+"""
+This is how we plot the figure in the paper
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
