@@ -10,3 +10,5 @@ Code/HVC_*
 Code/__pycache__
 Data/5/Old
 Data/10/old
+.DS_Store
+Data/temp/*.temp

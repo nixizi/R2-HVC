@@ -12,10 +12,12 @@ import pygmo
 import pyMC
 import time
 
+
 def read_data(name, variable_name):
     mat_file = sio.loadmat(name)
     data = mat_file[variable_name]
     return data
+
 
 def R2HVC(data_set, weight_vector_grid, exclusive_index, reference_point, is_maximize):
     """
@@ -37,16 +39,20 @@ def R2HVC(data_set, weight_vector_grid, exclusive_index, reference_point, is_max
     (num_weight_vector, dimenstion) = np.shape(weight_vector_grid)
     exclusive_point = data_set[exclusive_index, :]
     data_set_exclusive = np.delete(data_set, exclusive_index, axis=0)
-    temp1 = np.min(abs(exclusive_point - reference_point)/weight_vector_grid, axis=1)
+    temp1 = np.min(abs(exclusive_point - reference_point) /
+                   weight_vector_grid, axis=1)
     y = 0
     for i in range(num_weight_vector):
         if is_maximize is True:
-            temp = (exclusive_point - data_set_exclusive)/weight_vector_grid[i, :]
+            temp = (exclusive_point - data_set_exclusive) / \
+                weight_vector_grid[i, :]
         else:
-            temp = (data_set_exclusive - exclusive_point)/weight_vector_grid[i, :]
+            temp = (data_set_exclusive - exclusive_point) / \
+                weight_vector_grid[i, :]
         x = np.min(np.max(temp, axis=1))
         y = y + math.pow(min(x, temp1[i]), dimenstion)
     return y/num_weight_vector
+
 
 def R2_least_contributor(data_set, weight_vector_grid, reference_point, is_maximize):
     """
@@ -67,9 +73,11 @@ def R2_least_contributor(data_set, weight_vector_grid, reference_point, is_maxim
     (number_points, dimension) = np.shape(data_set)
     HVC = []
     for i in range(number_points):
-        HVC.append((i, R2HVC(data_set, weight_vector_grid, i, reference_point, is_maximize)))
+        HVC.append((i, R2HVC(data_set, weight_vector_grid,
+                             i, reference_point, is_maximize)))
     HVC = sorted(HVC, key=lambda x: x[1])
     return HVC[0][0]
+
 
 def Double_R2_least_contributor(data_set, weight_vector_grid_small, weight_vector_grid_large, reference_point, is_maximize):
     """
@@ -94,15 +102,18 @@ def Double_R2_least_contributor(data_set, weight_vector_grid_small, weight_vecto
     (number_points, dimension) = np.shape(data_set)
     HVC = []
     for i in range(number_points):
-        HVC.append((i, R2HVC(data_set, weight_vector_grid_small, i, reference_point, is_maximize)))
+        HVC.append((i, R2HVC(data_set, weight_vector_grid_small,
+                             i, reference_point, is_maximize)))
     HVC = sorted(HVC, key=lambda x: x[1])
-    
+
     HVC_ac = []
     for i in [HVC[j][0] for j in range(int(number_points * 0.5))]:
-        HVC_ac.append((i, R2HVC(data_set, weight_vector_grid_large, i, reference_point, is_maximize)))
+        HVC_ac.append(
+            (i, R2HVC(data_set, weight_vector_grid_large, i, reference_point, is_maximize)))
     HVC_ac = sorted(HVC_ac, key=lambda x: x[1])
 
     return HVC_ac[0][0]
+
 
 def generate_WV_grid(num_of_vectors, dimension):
     """
@@ -123,6 +134,7 @@ def generate_WV_grid(num_of_vectors, dimension):
     R = np.random.multivariate_normal(mu, sigma, num_of_vectors)
     V = abs(R/np.sqrt(np.sum(np.square(R), axis=1))[:, None])
     return V
+
 
 def get_weighted_vectors(M, H):
     """
@@ -154,6 +166,7 @@ def get_weighted_vectors(M, H):
     V = abs(V/np.sqrt(np.sum(np.square(V), axis=1))[:, None])
     return V
 
+
 def calculateHVC(data_set, reference_point, is_maximize):
     """
     Precisely HVC calculator, using WFG method
@@ -181,6 +194,7 @@ def calculateHVC(data_set, reference_point, is_maximize):
         HVC[p] = hv.exclusive(p, reference_point)
     return HVC
 
+
 def plot_3D(EP):
     # Print 3D graph of EP
     fig = plt.figure(figsize=(9, 9), dpi=200)
@@ -202,8 +216,10 @@ def plot_3D(EP):
     ax.view_init(20, 45)
     plt.show()
 
+
 if __name__ == "__main__":
-    datasets = read_data("/home/nixizi/Repository/R2-HVC/Data/5/data_set_5_100_linear_100.mat", "data_set")
+    datasets = read_data(
+        "/home/nixizi/Repository/R2-HVC/Data/5/data_set_5_100_linear_100.mat", "data_set")
     (num_point, dimension, num_data_set) = np.shape(datasets)
     count_R2 = 0
     count_Double = 0
@@ -222,9 +238,11 @@ if __name__ == "__main__":
         WV_large = generate_WV_grid(100, dimension)
         WV_small = generate_WV_grid(1, dimension)
         a = time.time()
-        R2_index = R2_least_contributor(data_set, WV_large, reference_point, is_maximize)
+        R2_index = R2_least_contributor(
+            data_set, WV_large, reference_point, is_maximize)
         b = time.time()
-        Double_index = Double_R2_least_contributor(data_set, WV_small, WV_large, reference_point, is_maximize)
+        Double_index = Double_R2_least_contributor(
+            data_set, WV_small, WV_large, reference_point, is_maximize)
         c = time.time()
         Double_time += (c - b)
         R2_time += (b - a)
@@ -232,9 +250,9 @@ if __name__ == "__main__":
         HV_index = hv.least_contributor(reference_point)
 
         if R2_index == HV_index:
-            count_R2+=1
+            count_R2 += 1
         if Double_index == HV_index:
-            count_Double+=1
+            count_Double += 1
 
     print("R2:", count_R2/num_data_set, "Double:", count_Double/num_data_set)
     print("R2 Time:", R2_time, "Double Time:", Double_time)

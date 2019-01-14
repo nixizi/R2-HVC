@@ -1,0 +1,16 @@
+实验
+
+审稿人要求我们要与exact hypervolume contribution的算法进行效率对比，因此需要实现相关exact算法。目前根据网上可以得到的代码，我打算采用IWFG和exQHV两个算法，网址如下：
+IWFG：
+http://www.wfg.csse.uwa.edu.au/hypervolume/index.html#code
+exQHV(Sequential algorithm for exclusion hypervolumes)：
+http://web.tecnico.ulisboa.pt/luis.russo/QHV/#down
+
+两种算法的代码均为C，因为目前我们的代码是基于matlab和python，所以你能否修改它们，建立它们和matlab或python的接口，最好可以能直接从matlab或python调用一个函数求contribution：
+Input: a solution set
+Output: the hypervolume contributions of each solution in this solution set
+数据还是我们之前采用的数据。
+
+注意：exQHV算法是一次性求出所有解的hypervolume contribution，而IWFG算法是求出最小contribution的解，但不去求所有解的contribution。
+
+之前我们代码中求contribution的是来自于pygmo，它里面求hypervolume的是wfg算法，但是求contribution的不是iwfg算法，所以估计在后续实验中用不上。
