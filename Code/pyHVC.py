@@ -6,10 +6,12 @@ import numpy as np
 import scipy.io as sio
 import pygmo
 
+
 def read_data(name, variable_name):
     mat_file = sio.loadmat(name)
     data = mat_file[variable_name]
     return data
+
 
 def calculateHVC(data, target_name):
     """
@@ -26,12 +28,13 @@ def calculateHVC(data, target_name):
         # HV = hv.compute(reference_point)
         for p in range(point_num):
             HVC[0, p, s] = hv.exclusive(p, reference_point)
-        print("Finished ", s ,"th HVC")
+        print("Finished ", s, "th HVC")
     a_dict = {'HVC': HVC}
     # print(HVC)
     sio.savemat(target_name, a_dict)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     point_num = 10
     dimension = 3
     data_set_size = 10
@@ -39,5 +42,7 @@ if __name__=="__main__":
     #data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
     #calculateHVC(data, "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size))
     for data_type in ["linear_triangular", "linear_invertedtriangular", "concave_triangular", "concave_invertedtriangular", "convex_triangular", "convex_invertedtriangular"]:
-        data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size), "data_set")
-        calculateHVC(data, "HVC_{0}_{1}_{2}_{3}.mat".format(dimension, point_num, data_type, data_set_size))
+        data = read_data("data_set_{0}_{1}_{2}_{3}.mat".format(
+            dimension, point_num, data_type, data_set_size), "data_set")
+        calculateHVC(data, "HVC_{0}_{1}_{2}_{3}.mat".format(
+            dimension, point_num, data_type, data_set_size))
