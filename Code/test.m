@@ -1,6 +1,6 @@
-dimension = 10;
+dimension = 5;
 solution_number = 100;
-problem_type = [string('concave_triangular1')];
+problem_type = [string('concave_triangular')];
 %set(gca,'position',[0.1,0.1,0.9,0.9]);
 figure1=figure('Position', [0, 0, 1500, 400]);
 for reference_point = 0:1:4

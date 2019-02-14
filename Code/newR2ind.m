@@ -1,8 +1,13 @@
-function R2val = newR2ind(data,W,dim,s)
-%% R2 for hvc approximation
+function R2val = newR2ind(data,W,s,ref)
+%R2 for hvc approximation
+    %data = min(s,data);   
+    %data = data*(-1);
+    %data = unique (data(stk_paretofind (data), :), 'rows');
+    %data = data*(-1);
+    
     y = 0;
-    [row, ~] = size(W);
-    temp1 = min(s./W,[],2);
+    [row, dim] = size(W);
+    temp1 = min(abs(s-ref)./W,[],2);
     for j=1:row
         temp = (s-data)./W(j,:);
         [x,~] = min(max(temp,[],2));

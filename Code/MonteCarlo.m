@@ -1,4 +1,4 @@
-function HVC_Appro = MonteCarlo(data,s,solutionIndex,dim,numSample, points)
+function HVC_Appro = MonteCarlo(data,s,solutionIndex,dim,numSample)
 %MonteCarlo - This is the implementation of the Monte Carlo simulation
 %method for the hypervolume contribution in paper "Faster Hypervolume-Based
 %Search Using Monte Carlo Sampling" by Johannes Bader, Kalyanmoy Deb, and 
@@ -29,7 +29,9 @@ function HVC_Appro = MonteCarlo(data,s,solutionIndex,dim,numSample, points)
     % sampling space: u->s
     % monte carlo sampling
     
-    points = points.*(s-u) + u;
+    %points = points.*(s-u) + u;
+    points   = unifrnd(repmat(u,numSample,1),repmat(s,numSample,1));
+
     
     data1 = data;
     data1(solutionIndex,:) = [];
@@ -43,5 +45,5 @@ function HVC_Appro = MonteCarlo(data,s,solutionIndex,dim,numSample, points)
     end
     
     HVC_Appro = (numSample-miss)/numSample*prod(s-u);
-%    HVC_Appro = prod(s-u);
+      %HVC_Appro=prod(s-u);
 end
