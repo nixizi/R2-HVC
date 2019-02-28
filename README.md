@@ -2,8 +2,6 @@
 
 Code and data for R2-based Hypervolume Contribution Approximation.
 
-The paper has been submitted to TEVC.
-
 [arXiv link](https://arxiv.org/abs/1805.06773)
 
 ## Data
